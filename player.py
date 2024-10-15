@@ -13,13 +13,15 @@ class Player:
         minimum_raise = game_state["minimum_raise"]
         stack = player["stack"]
 
+        print(stack)
+
         # Determine your current hand strength
         hand_strength = HandEvaluator.evaluate_hand(hole_cards, community_cards)
 
         # Betting strategy based on hand strength and stage of the game
         if len(community_cards) == 0:
             # Pre-flop strategy
-            return self.pre_flop_strategy(hole_cards, current_buy_in, player_bet, minimum_raise)
+            return self.pre_flop_strategy(hole_cards, current_buy_in, player_bet, minimum_raise, stack)
         else:
             # Post-flop, Turn, River strategy
             return self.post_flop_strategy(hand_strength, current_buy_in, player_bet, minimum_raise, stack)
@@ -27,7 +29,7 @@ class Player:
     def showdown(self, game_state):
         pass
 
-    def pre_flop_strategy(self, hole_cards, current_buy_in, player_bet, minimum_raise):
+    def pre_flop_strategy(self, hole_cards, current_buy_in, player_bet, minimum_raise, stack):
         # Simple pre-flop strategy based on hole cards
         strong_hands = [('A', 'A'), ('K', 'K'), ('Q', 'Q'), ('A', 'K'), ('J', 'J')]
         moderate_hands = [('A', 'Q'), ('A', 'J'), ('K', 'Q'), ('K', 'J'), ('10', '10')]
