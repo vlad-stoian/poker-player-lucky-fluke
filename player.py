@@ -1,7 +1,7 @@
 from hand_evaluator import HandEvaluator
 
 class Player:
-    VERSION = "B0rk3d AI Hero"
+    VERSION = "B0rk3d AI Hero Aggressive"
 
     def betRequest(self, game_state):
         player_index = game_state["in_action"]
@@ -49,7 +49,7 @@ class Player:
         # Simple post-flop, turn, and river strategy based on hand strength
         if hand_strength >= 5:
             # Strong hand (Two pair, three of a kind, straight, flush, etc.)
-            return current_buy_in - player_bet + minimum_raise  # Raise
+            return (current_buy_in - player_bet + minimum_raise) * 4  # Raise
         elif hand_strength >= 2:
             # Medium strength (Top pair, second pair)
             return current_buy_in - player_bet  # Call or check
