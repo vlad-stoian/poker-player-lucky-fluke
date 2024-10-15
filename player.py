@@ -13,7 +13,7 @@ class Player:
         minimum_raise = game_state["minimum_raise"]
         stack = player["stack"]
 
-        print(stack)
+        print("Current stack:", stack)
 
         # Determine your current hand strength
         hand_strength = HandEvaluator.evaluate_hand(hole_cards, community_cards)
