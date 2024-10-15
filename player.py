@@ -1,9 +1,27 @@
+from hand_evaluator import HandEvaluator
+
 class Player:
     VERSION = "B0rk3d"
 
     def betRequest(self, game_state):
-        return game_state["current_buy_in"] - game_state["players"][game_state["in_action"]]["bet"] + game_state[
-            "minimum_raise"] + 1
+        player_index = game_state["in_action"]
+        player = game_state["players"][player_index]
+        hole_cards = player["hole_cards"]
+        community_cards = game_state["community_cards"]
+        current_buy_in = game_state["current_buy_in"]
+        player_bet = player["bet"]
+        minimum_raise = game_state["minimum_raise"]
+
+        # Determine your current hand strength
+        hand_strength = HandEvaluator.evaluate_hand(hole_cards, community_cards)
+
+        # Betting strategy based on hand strength and stage of the game
+        if len(community_cards) == 0:
+            # Pre-flop strategy
+            return self.pre_flop_strategy(hole_cards, current_buy_in, player_bet, minimum_raise)
+        else:
+            # Post-flop, Turn, River strategy
+            return self.post_flop_strategy(hand_strength, current_buy_in, player_bet, minimum_raise)
 
     def showdown(self, game_state):
         pass
