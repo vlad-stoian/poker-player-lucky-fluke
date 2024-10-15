@@ -1,7 +1,7 @@
 from hand_evaluator import HandEvaluator
 
 class Player:
-    VERSION = "B0rk3d"
+    VERSION = "B0rk3d AI"
 
     def betRequest(self, game_state):
         player_index = game_state["in_action"]
