@@ -1,7 +1,7 @@
 from hand_evaluator import HandEvaluator
 
 class Player:
-    VERSION = "B0rk3d AI Hero Aggressive Sophisticated"
+    VERSION = "B0rk3d AI Hero Aggressive Sophisticated 2"
 
     def betRequest(self, game_state):
         player_index = game_state["in_action"]
@@ -57,7 +57,7 @@ class Player:
             return min_raise_amount * 4  # Raise
         elif hand_strength >= 2:
             # Medium strength (Top pair, second pair)
-            if call_amount < stack / 4:
+            if hand_strength == 4 or call_amount < stack / 4:
                 return call_amount
             return 0  # Call or check
         else:
