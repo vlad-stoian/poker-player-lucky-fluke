@@ -6,13 +6,11 @@ import http.server
 import os
 from player import Player
 
-
 HOST_NAME = '0.0.0.0'
 PORT_NUMBER = 'PORT' in os.environ and int(os.environ['PORT']) or 9000
 
 
 class PlayerService(http.server.BaseHTTPRequestHandler):
-
     def do_POST(self):
 
         self.send_response(200)
@@ -36,7 +34,6 @@ class PlayerService(http.server.BaseHTTPRequestHandler):
         else:
             game_state = {}
 
-
         response = b''
         if action == 'bet_request':
             response = b'%d' % Player().betRequest(game_state)
@@ -46,6 +43,7 @@ class PlayerService(http.server.BaseHTTPRequestHandler):
             response = Player.VERSION.encode()
 
         self.wfile.write(response)
+
 
 if __name__ == '__main__':
     server_class = http.server.HTTPServer
