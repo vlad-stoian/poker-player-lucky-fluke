@@ -1,7 +1,7 @@
 from hand_evaluator import HandEvaluator
 
 class Player:
-    VERSION = "B0rk3d AI Warrior"
+    VERSION = "B0rk3d AI Hero"
 
     def betRequest(self, game_state):
         player_index = game_state["in_action"]
@@ -50,7 +50,7 @@ class Player:
         if hand_strength >= 5:
             # Strong hand (Two pair, three of a kind, straight, flush, etc.)
             return current_buy_in - player_bet + minimum_raise  # Raise
-        elif hand_strength >= 3:
+        elif hand_strength >= 2:
             # Medium strength (Top pair, second pair)
             return current_buy_in - player_bet  # Call or check
         else:
