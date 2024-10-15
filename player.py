@@ -1,8 +1,7 @@
-from collections import Counter
 from hand_evaluator import HandEvaluator
 
 class Player:
-    VERSION = "Agressive Porky"
+    VERSION = "B0rk3d AI"
 
     def betRequest(self, game_state):
         player_index = game_state["in_action"]
@@ -27,46 +26,35 @@ class Player:
     def showdown(self, game_state):
         pass
 
-    def post_flop_strategy(self, hole_cards, community_cards, hand_strength, current_buy_in, player_bet, minimum_raise):
-        # Combine hole cards and community cards
-        all_cards = hole_cards + community_cards
-        
-        # Extract ranks and suits from all cards
-        ranks = [card['rank'] for card in all_cards]
-        suits = [card['suit'] for card in all_cards]
+    def pre_flop_strategy(self, hole_cards, current_buy_in, player_bet, minimum_raise):
+        # Simple pre-flop strategy based on hole cards
+        strong_hands = [('A', 'A'), ('K', 'K'), ('Q', 'Q'), ('A', 'K'), ('J', 'J')]
+        moderate_hands = [('A', 'Q'), ('A', 'J'), ('K', 'Q'), ('K', 'J'), ('10', '10')]
 
-        # Convert ranks to numerical values for easier comparison
-        rank_order = {'2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9,
-                    '10': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 14}
-        sorted_ranks = sorted([rank_order[rank] for rank in ranks], reverse=True)
+        card_ranks = sorted([card["rank"] for card in hole_cards])
 
-        # Count the occurrence of each suit
-        suit_counts = Counter(suits)
-
-        # Now proceed with the strategy using sorted_ranks and suit_counts
-        if hand_strength >= 8:
-            # Strong hand (e.g., trips or better), raise aggressively
-            return current_buy_in - player_bet + 3 * minimum_raise
-        elif hand_strength >= 5:
-            # Medium strength hand (e.g., top pair), play moderately
-            return current_buy_in - player_bet + minimum_raise
-        elif self.is_straight_draw(sorted_ranks) or self.is_flush_draw(suit_counts):
-            # Semi-bluff when you have a strong draw (straight or flush draw)
-            return current_buy_in - player_bet + minimum_raise
+        if tuple(card_ranks) in strong_hands:
+            # Raise with strong hands
+            return current_buy_in - player_bet + minimum_raise  # Raise aggressively
+        elif tuple(card_ranks) in moderate_hands:
+            # Call with moderate hands
+            return current_buy_in - player_bet  # Just call
         else:
-            # Fold if you have a weak hand
-            return 0 if current_buy_in > player_bet else current_buy_in - player_bet
+            # Check or fold with weak hands
+            if current_buy_in > player_bet:
+                return 0  # Fold if the bet is raised too high
+            return current_buy_in - player_bet  # Otherwise, check or call
         
-    def is_straight_draw(self, sorted_ranks):
-    # Check for a straight draw (4 consecutive cards)
-        for i in range(len(sorted_ranks) - 3):
-            if sorted_ranks[i] - sorted_ranks[i + 3] == 3:
-                return True
-        return False
-
-    def is_flush_draw(self, suit_counts):
-        # Check for a flush draw (4 cards of the same suit)
-        for suit, count in suit_counts.items():
-            if count == 4:
-                return True
-        return False
+    def post_flop_strategy(self, hand_strength, current_buy_in, player_bet, minimum_raise):
+        # Simple post-flop, turn, and river strategy based on hand strength
+        if hand_strength >= 8:
+            # Strong hand (Two pair, three of a kind, straight, flush, etc.)
+            return current_buy_in - player_bet + minimum_raise  # Raise
+        elif hand_strength >= 5:
+            # Medium strength (Top pair, second pair)
+            return current_buy_in - player_bet  # Call or check
+        else:
+            # Weak hand (Nothing or low pairs)
+            if current_buy_in > player_bet:
+                return 0  # Fold if the bet is too high
+            return current_buy_in - player_bet  # Otherwise, check or call
