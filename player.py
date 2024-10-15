@@ -1,7 +1,7 @@
 from hand_evaluator import HandEvaluator
 
 class Player:
-    VERSION = "B0rk3d AI Hero Aggressive"
+    VERSION = "B0rk3d AI Hero Aggressive Sophisticated"
 
     def betRequest(self, game_state):
         player_index = game_state["in_action"]
@@ -11,6 +11,7 @@ class Player:
         current_buy_in = game_state["current_buy_in"]
         player_bet = player["bet"]
         minimum_raise = game_state["minimum_raise"]
+        stack = player["stack"]
 
         # Determine your current hand strength
         hand_strength = HandEvaluator.evaluate_hand(hole_cards, community_cards)
@@ -21,7 +22,7 @@ class Player:
             return self.pre_flop_strategy(hole_cards, current_buy_in, player_bet, minimum_raise)
         else:
             # Post-flop, Turn, River strategy
-            return self.post_flop_strategy(hand_strength, current_buy_in, player_bet, minimum_raise)
+            return self.post_flop_strategy(hand_strength, current_buy_in, player_bet, minimum_raise, stack)
 
     def showdown(self, game_state):
         pass
@@ -45,14 +46,18 @@ class Player:
                 return 0  # Fold if the bet is raised too high
             return current_buy_in - player_bet  # Otherwise, check or call
         
-    def post_flop_strategy(self, hand_strength, current_buy_in, player_bet, minimum_raise):
+    def post_flop_strategy(self, hand_strength, current_buy_in, player_bet, minimum_raise, stack):
+        min_raise_amount = current_buy_in - player_bet + minimum_raise
+        call_amount = current_buy_in - player_bet
         # Simple post-flop, turn, and river strategy based on hand strength
         if hand_strength >= 5:
             # Strong hand (Two pair, three of a kind, straight, flush, etc.)
-            return (current_buy_in - player_bet + minimum_raise) * 4  # Raise
+            return min_raise_amount * 4  # Raise
         elif hand_strength >= 2:
             # Medium strength (Top pair, second pair)
-            return current_buy_in - player_bet  # Call or check
+            if call_amount < stack / 4:
+                return call_amount
+            return 0  # Call or check
         else:
             # Weak hand (Nothing or low pairs)
             if current_buy_in > player_bet:
