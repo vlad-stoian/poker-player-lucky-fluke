@@ -66,11 +66,10 @@ class Player:
     def post_flop_strategy(self, hand_strength, current_buy_in, player_bet, minimum_raise, stack, num_community_cards):
         call_amount = current_buy_in - player_bet
         if hand_strength >= 5:
-            if num_community_cards == 5:
-                if hand_strength >= 9:
-                    return call_amount + stack  # All-in
-                elif hand_strength >= 8:
-                    return call_amount + max(stack / 2, minimum_raise)
+            if hand_strength >= 9:
+                return call_amount + stack  # All-in
+            elif hand_strength >= 8:
+                return call_amount + max(stack / 2, minimum_raise)
             return call_amount + minimum_raise  # Raise
         elif hand_strength >= 2:
             if hand_strength == 4 or call_amount < stack / 4:
