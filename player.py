@@ -71,7 +71,7 @@ class Player:
                 if hand_strength >= 9:
                     return call_amount + stack  # All-in
                 elif hand_strength >= 8:
-                    return call_amount + stack / 2
+                    return call_amount + max(stack / 2, minimum_raise)
             return min_raise_amount * 4  # Raise
         elif hand_strength >= 2:
             if hand_strength == 4 or call_amount < stack / 4:
