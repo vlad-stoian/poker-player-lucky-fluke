@@ -44,79 +44,74 @@ class Player:
         return int(score + 0.5)
 
     def betRequest(self, game_state):
-        try:
-            me = game_state['players'][game_state['in_action']]
-            hole_cards = me['hole_cards']
-            me_stack = me['stack']
-            me_bet = me['bet']
-            dealer = game_state['dealer']
+        me = game_state['players'][game_state['in_action']]
+        hole_cards = me['hole_cards']
+        me_stack = me['stack']
+        me_bet = me['bet']
+        dealer = game_state['dealer']
 
-            out_players_count = len([player for player in game_state['players'] if player['status'] == 'out'])
-            am_i_mid = (dealer + 1 + out_players_count) == game_state['in_action']
-            am_i_late = (dealer + 2 + out_players_count) == game_state['in_action']
+        out_players_count = len([player for player in game_state['players'] if player['status'] == 'out'])
+        am_i_mid = (dealer + 1 + out_players_count) == game_state['in_action']
+        am_i_late = (dealer + 2 + out_players_count) == game_state['in_action']
 
-            other_large_bet = len([player for player in game_state['players'] if
-                                   player['name'] != me['name'] and player['stack'] < player['bet'] and player[
-                                       'status'] == 'active'])
+        other_large_bet = len([player for player in game_state['players'] if
+                                player['name'] != me['name'] and player['stack'] < player['bet'] and player[
+                                    'status'] == 'active'])
 
-            me_large_bet = 1 if me_stack < me_bet else 0
+        me_large_bet = 1 if me_stack < me_bet else 0
 
-            card1 = self.rank_to_value(hole_cards[0]['rank'])
-            card2 = self.rank_to_value(hole_cards[1]['rank'])
-            highest_card = max(card1, card2)
-            lowest_card = min(card1, card2)
+        card1 = self.rank_to_value(hole_cards[0]['rank'])
+        card2 = self.rank_to_value(hole_cards[1]['rank'])
+        highest_card = max(card1, card2)
+        lowest_card = min(card1, card2)
 
-            matching_community_low = len(
-                [card for card in game_state['community_cards'] if self.rank_to_value(card['rank']) == highest_card])
-            matching_community_high = len(
-                [card for card in game_state['community_cards'] if self.rank_to_value(card['rank']) == lowest_card])
-            card1_matching_suit = len(
-                [card for card in game_state['community_cards'] if card['suit'] == hole_cards[0]['suit']])
-            card2_matching_suit = len(
-                [card for card in game_state['community_cards'] if card['suit'] == hole_cards[1]['suit']])
+        matching_community_low = len(
+            [card for card in game_state['community_cards'] if self.rank_to_value(card['rank']) == highest_card])
+        matching_community_high = len(
+            [card for card in game_state['community_cards'] if self.rank_to_value(card['rank']) == lowest_card])
+        card1_matching_suit = len(
+            [card for card in game_state['community_cards'] if card['suit'] == hole_cards[0]['suit']])
+        card2_matching_suit = len(
+            [card for card in game_state['community_cards'] if card['suit'] == hole_cards[1]['suit']])
 
-            big_raise = me_stack // 2
-            minimum_raise = game_state['current_buy_in'] - me_bet + game_state['minimum_raise']
-            if big_raise < minimum_raise:
-                big_raise = me_stack
+        big_raise = me_stack // 2
+        minimum_raise = game_state['current_buy_in'] - me_bet + game_state['minimum_raise']
+        if big_raise < minimum_raise:
+            big_raise = me_stack
 
-            small_raise = game_state['current_buy_in'] - me_bet + game_state['minimum_raise']
-            call = game_state['current_buy_in'] - me_bet
+        small_raise = game_state['current_buy_in'] - me_bet + game_state['minimum_raise']
+        call = game_state['current_buy_in'] - me_bet
 
-            if other_large_bet == 0 and am_i_late:
-                print('Late position all in')
-                return 10000
+        if other_large_bet == 0 and am_i_late:
+            print('Late position all in')
+            return 10000
 
-            c_score = self.calculate_c_score(hole_cards, highest_card, lowest_card)
+        c_score = self.calculate_c_score(hole_cards, highest_card, lowest_card)
 
-            positional_adjustment = 0
-            if am_i_late:
-                positional_adjustment = 3
-            elif am_i_mid:
-                positional_adjustment = 1
+        positional_adjustment = 0
+        if am_i_late:
+            positional_adjustment = 3
+        elif am_i_mid:
+            positional_adjustment = 1
 
-            adjusted_score = c_score + out_players_count - other_large_bet + me_large_bet + matching_community_low + matching_community_high + positional_adjustment + card1_matching_suit + card2_matching_suit
+        adjusted_score = c_score + out_players_count - other_large_bet + me_large_bet + matching_community_low + matching_community_high + positional_adjustment + card1_matching_suit + card2_matching_suit
 
-            b = 0
-            if adjusted_score >= 11:
-                b = 10000
-                print('all in', b)
-            elif adjusted_score >= 9:
-                b = big_raise
-                print('big raise', b)
-            elif adjusted_score >= 8:
-                b = min(small_raise, me_stack // 5)
-                print('small raise', b)
-            elif adjusted_score >= 7:
-                b = min(call, me_stack // 5)
-                print('call', b)
+        b = 0
+        if adjusted_score >= 11:
+            b = 10000
+            print('all in', b)
+        elif adjusted_score >= 9:
+            b = big_raise
+            print('big raise', b)
+        elif adjusted_score >= 8:
+            b = min(small_raise, me_stack // 5)
+            print('small raise', b)
+        elif adjusted_score >= 7:
+            b = min(call, me_stack // 5)
+            print('call', b)
 
-            print('returning bet', b)
-            return int(b)
-
-        except Exception as e:
-            print('exception', e)
-            return 0
+        print('returning bet', b)
+        return int(b)
 
     def showdown(self, game_state):
         pass
