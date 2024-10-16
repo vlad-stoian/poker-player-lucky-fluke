@@ -42,14 +42,16 @@ class Player:
         strong_hands = [('A', 'A'), ('K', 'K'), ('Q', 'Q'), ('A', 'K'), ('J', 'J')]
         moderate_hands = [('A', 'Q'), ('A', 'J'), ('K', 'Q'), ('J', 'K'), ('10', '10')]
 
+        call_amount = current_buy_in - player_bet
+
         card_ranks = sorted([card["rank"] for card in hole_cards])
 
         if tuple(card_ranks) in strong_hands:
             # Raise with strong hands
-            return current_buy_in - player_bet + minimum_raise  # Raise aggressively
+            return call_amount + minimum_raise  # Raise aggressively
         elif tuple(card_ranks) in moderate_hands:
             # Call with moderate hands
-            return current_buy_in - player_bet  # Just call
+            return call_amount  # Just call
         else:
             # Check or fold with weak hands
             if current_buy_in > player_bet:
