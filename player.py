@@ -51,9 +51,12 @@ class Player:
 
         card_ranks = sorted([card["rank"] for card in hole_cards])
 
+
         if tuple(card_ranks) in strong_hands:
             # Raise with strong hands
             return call_amount + minimum_raise  # Raise aggressively
+        elif hole_cards[0]["rank"] == hole_cards[1]["rank"]:
+            return call_amount
         elif tuple(card_ranks) in moderate_hands:
             # Call with moderate hands
             return call_amount  # Just call
