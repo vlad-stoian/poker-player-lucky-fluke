@@ -23,14 +23,16 @@ class Player:
             # Determine your current hand strength
             hand_strength = HandEvaluator.evaluate_hand(hole_cards, community_cards)
 
+            num_community_cards = len(community_cards)
+
             # Betting strategy based on hand strength and stage of the game
-            if len(community_cards) == 0:
+            if num_community_cards == 0:
                 # Pre-flop strategy
                 return self.pre_flop_strategy(hole_cards, current_buy_in, player_bet, minimum_raise, stack)
             else:
                 # Post-flop, Turn, River strategy
                 value = self.post_flop_strategy(
-                    hand_strength, current_buy_in, player_bet, minimum_raise, stack, len(community_cards))
+                    hand_strength, current_buy_in, player_bet, minimum_raise, stack, num_community_cards)
                 return int(value)
         except Exception as e:
             print("Error occured betting 0", e)
