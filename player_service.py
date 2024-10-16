@@ -4,7 +4,7 @@ import json
 import urllib.parse
 import http.server
 import os
-from player import Player
+from aggressive_porky_player import Player
 
 HOST_NAME = '0.0.0.0'
 PORT_NUMBER = 'PORT' in os.environ and int(os.environ['PORT']) or 9000
