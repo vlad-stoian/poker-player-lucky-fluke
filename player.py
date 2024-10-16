@@ -78,4 +78,4 @@ class Player:
         else:
             if call_amount > 0:
                 return 0  # Fold if the bet is too high
-            return current_buy_in - player_bet  # Otherwise, check or call
+            return call_amount  # Otherwise, check or call
