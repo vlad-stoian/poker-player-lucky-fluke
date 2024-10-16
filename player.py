@@ -14,7 +14,9 @@ class Player:
             player_bet = player["bet"]
             minimum_raise = game_state["minimum_raise"]
             stack = player["stack"]
+            small_blind = game_state["small_blind"]
 
+            print("Small blind:", small_blind)
             print("Current stack:", stack)
             print("Hole cards:", hole_cards)
 
