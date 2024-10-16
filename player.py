@@ -74,6 +74,6 @@ class Player:
             return 0  # Call or check
         else:
             # Weak hand (Nothing or low pairs)
-            if current_buy_in > player_bet:
+            if call_amount > 0:
                 return 0  # Fold if the bet is too high
             return current_buy_in - player_bet  # Otherwise, check or call
