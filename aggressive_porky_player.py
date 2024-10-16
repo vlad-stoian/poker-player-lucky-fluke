@@ -56,7 +56,7 @@ class Player:
             am_i_late = (dealer + 2 + out_players_count) == game_state['in_action']
 
             other_large_bet = len([player for player in game_state['players'] if
-                                   player['name'] != me['name'] and player['stack'] < player['bet'] and player[
+                                   player['name'] != me['name'] and me['stack'] < player['bet'] and player[
                                        'status'] == 'active'])
 
             me_large_bet = 1 if me_stack < me_bet else 0
