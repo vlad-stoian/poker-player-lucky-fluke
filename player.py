@@ -67,7 +67,7 @@ class Player:
         call_amount = current_buy_in - player_bet
         if hand_strength >= 5:
             if hand_strength >= 9:
-                return call_amount + stack  # All-in
+                return call_amount + max(stack, minimum_raise)  # All-in
             elif hand_strength >= 8:
                 return call_amount + max(stack / 2, minimum_raise)
             return call_amount + minimum_raise  # Raise
