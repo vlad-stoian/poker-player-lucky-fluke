@@ -63,17 +63,16 @@ class Player:
     def post_flop_strategy(self, hand_strength, current_buy_in, player_bet, minimum_raise, stack, num_community_cards):
         min_raise_amount = current_buy_in - player_bet + minimum_raise
         call_amount = current_buy_in - player_bet
-        # Simple post-flop, turn, and river strategy based on hand strength
         if hand_strength >= 5:
-            # Strong hand (Two pair, three of a kind, straight, flush, etc.)
+            if num_community_cards == 5:
+                if hand_strength >= 9:
+                    return call_amount + stack  # All-in
             return min_raise_amount * 4  # Raise
         elif hand_strength >= 2:
-            # Medium strength (Top pair, second pair)
             if hand_strength == 4 or call_amount < stack / 4:
                 return call_amount
-            return 0  # Call or check
+            return 0
         else:
-            # Weak hand (Nothing or low pairs)
             if call_amount > 0:
                 return 0  # Fold if the bet is too high
             return current_buy_in - player_bet  # Otherwise, check or call
