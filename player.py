@@ -1,7 +1,7 @@
 from hand_evaluator import HandEvaluator
 
 class Player:
-    VERSION = "B0rk3d AI Alpha 0.1"
+    VERSION = "B0rk3d AI Alpha 0.2"
 
     def betRequest(self, game_state):
 
