@@ -83,10 +83,6 @@ class Player:
             small_raise = game_state['current_buy_in'] - me_bet + game_state['minimum_raise']
             call = game_state['current_buy_in'] - me_bet
 
-            if other_large_bet == 0 and am_i_late:
-                print('Late position all in')
-                return 10000
-
             c_score = self.calculate_c_score(hole_cards, highest_card, lowest_card)
 
             positional_adjustment = 0
