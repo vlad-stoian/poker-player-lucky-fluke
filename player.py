@@ -62,7 +62,11 @@ class Player:
             if current_buy_in > player_bet:
                 return 0  # Fold if the bet is raised too high
             return current_buy_in - player_bet  # Otherwise, check or call
-        
+
+    def calculate_pot_odds(self, current_buy_in, player_bet, pot):
+        call_amount = current_buy_in - player_bet
+        return call_amount / pot
+
     def post_flop_strategy(self, hand_strength, current_buy_in, player_bet, minimum_raise, stack, num_community_cards):
         call_amount = current_buy_in - player_bet
         if hand_strength >= 5:
