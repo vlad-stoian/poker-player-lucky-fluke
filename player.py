@@ -24,6 +24,7 @@ class Player:
             hand_strength = HandEvaluator.evaluate_hand(hole_cards, community_cards)
 
             num_community_cards = len(community_cards)
+            print("Num community cards:", num_community_cards)
 
             # Betting strategy based on hand strength and stage of the game
             if num_community_cards == 0:
