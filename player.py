@@ -16,6 +16,7 @@ class Player:
             stack = player["stack"]
 
             print("Current stack:", stack)
+            print("Hole cards:", hole_cards)
 
             # Determine your current hand strength
             hand_strength = HandEvaluator.evaluate_hand(hole_cards, community_cards)
