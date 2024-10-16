@@ -13,7 +13,7 @@ class Player:
         else:
             return int(rank)
 
-    def calculate_crazy_score(self, hole_cards, highest_card, lowest_card):
+    def calculate_chen_score(self, hole_cards, highest_card, lowest_card):
         is_pair = highest_card == lowest_card
         is_suited = hole_cards[0]['suite'] == hole_cards[1]['suite']
         gap = highest_card - lowest_card
@@ -84,10 +84,10 @@ class Player:
             call = game_state['current_buy_in'] - me_bet
 
             if other_large_bet == 0 and am_i_late:
-                print('late position all in')
+                print('Late position all in')
                 return self.bet(10000)
 
-            crazy_score = self.calculate_crazy_score(hole_cards, highest_card, lowest_card)
+            chen_score = self.calculate_chen_score(hole_cards, highest_card, lowest_card)
 
             positional_adjustment = 0
             if am_i_late:
@@ -95,7 +95,7 @@ class Player:
             elif am_i_mid:
                 positional_adjustment = 1
 
-            adjusted_score = crazy_score + out_players_count - other_large_bet + me_large_bet + matching_community_low + matching_community_high + positional_adjustment + card1_matching_suit + card2_matching_suit
+            adjusted_score = chen_score + out_players_count - other_large_bet + me_large_bet + matching_community_low + matching_community_high + positional_adjustment + card1_matching_suit + card2_matching_suit
 
             b = 0
             if adjusted_score >= 11:
