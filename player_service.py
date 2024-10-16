@@ -4,7 +4,8 @@ import json
 import urllib.parse
 import http.server
 import os
-from aggressive_porky_player import Player
+from player import Player
+from player_service import PlayerService
 
 HOST_NAME = '0.0.0.0'
 PORT_NUMBER = 'PORT' in os.environ and int(os.environ['PORT']) or 9000
@@ -36,7 +37,7 @@ class PlayerService(http.server.BaseHTTPRequestHandler):
 
         response = b''
         if action == 'bet_request':
-            response = b'%d' % Player().betRequest(game_state)
+            response = b'%d' % PlayerService().bet(game_state)
         elif action == 'showdown':
             Player().showdown(game_state)
         elif action == 'version':

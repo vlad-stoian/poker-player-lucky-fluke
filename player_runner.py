@@ -1,5 +1,5 @@
-from aggressive_porky_player import AggressivePorky
-from player import Conservative_Player
+from aggressive_porky_player import Player as AggressivePorky
+from player import Player as Conservative_Player
 
 class PlayerRunner:
     def __init__(self):
