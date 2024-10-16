@@ -38,7 +38,7 @@ class Player:
     def pre_flop_strategy(self, hole_cards, current_buy_in, player_bet, minimum_raise, stack):
         # Simple pre-flop strategy based on hole cards
         strong_hands = [('A', 'A'), ('K', 'K'), ('Q', 'Q'), ('A', 'K'), ('J', 'J')]
-        moderate_hands = [('A', 'Q'), ('A', 'J'), ('K', 'Q'), ('K', 'J'), ('10', '10')]
+        moderate_hands = [('A', 'Q'), ('A', 'J'), ('K', 'Q'), ('J', 'K'), ('10', '10')]
 
         card_ranks = sorted([card["rank"] for card in hole_cards])
 
